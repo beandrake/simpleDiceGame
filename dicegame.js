@@ -55,6 +55,7 @@ class DiceGame
 	constructor(numberOfDice) 
 	{
 		this.diceList = []
+		this.currentlyRolling = false;
 
 		for (let currentDice = 1; currentDice <= 2; currentDice++)
 		{
@@ -111,11 +112,17 @@ class DiceGame
 			} else {
 				headingElement.textContent = "Result: Draw!"
 			}
+
+			this.currentlyRolling = false;
 		}
 	}
 
 	playGame() 
 	{		
+		// don't start a new game if the previous one is still running
+		if (this.currentlyRolling) return;
+		this.currentlyRolling = true;		
+		
 		const headingElement = document.getElementById('bigwords');
 		headingElement.textContent = "Rolling Dice..."
 
@@ -131,11 +138,11 @@ class DiceGame
 }
 
 
-
-
+/////////////////////////////////////////////////////
 
 const diceGame = new DiceGame(2);
 
+// roll the dice if the Roll button is clicked
 function buttonClicked()
 {
 	diceGame.playGame();
@@ -143,6 +150,14 @@ function buttonClicked()
 const buttonElement = document.getElementById('roll-button');
 buttonElement.addEventListener('click', buttonClicked);
 
-/////////////////////////////////////////////////////
-
+// roll the dice if the R key is pressed
+function keyPressed(event)
+{
+	//console.log(event);
+	if (event.key.toLowerCase() == 'r')
+	{
+		diceGame.playGame();
+	}
+}
+document.addEventListener("keydown", keyPressed);
 
